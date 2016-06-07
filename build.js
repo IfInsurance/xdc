@@ -6,10 +6,12 @@ function autoBuild(solutionName, contractsProjectName) {
     exec(`msbuild ${solutionName}\\${solutionName}.sln`, (error, stdout, stderr) => {
         if (error) {
             console.error (`exec error: ${error}`);
+            console.error (stdout);
+            console.error (stderr);
             return;
         }
         
-        fs.rename('.\\${solutionName}\\artifacts\\bin\\${contractsProjectName}\\Debug\\*.nupkg', 'C:\\lib\\*.nupkg', error => {
+        exec(`move .\\${solutionName}\\artifacts\\bin\\${contractsProjectName}\\Debug\\*.nupkg C:\\lib`, error => {
             if (error) {
                 console.error (`Error while moving nupkg: ${error}`);
             } 
@@ -17,5 +19,5 @@ function autoBuild(solutionName, contractsProjectName) {
     });
 }
 
-autoBuild('OnPremiseMessageHandler1', 'Contracts');
-autoBuild('OnPremiseMessageHandler2', 'OnPremiseMessageHandler2.Contracts');
+autoBuild('OnPremiseService1', 'Public');
+autoBuild('OnPremiseService2', 'Public');
