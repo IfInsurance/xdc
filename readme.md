@@ -5,6 +5,8 @@ Cross Data-Centre Logic, or *on-premise to the cloud and back again*!
 Start `MSBuild Command Prompt` and then invoke `powershell` from there.
 You'll want `node` and `nodemon` installed.
 
+Start auto builds with `nodemon -e cs -w .\ -C .\build.js`
+
 ## Todo
 ### On Premise Service 1 - Environment information
 1. Create class library project `OnPremiseService1.Public` in solution `OnPremiseService1`
