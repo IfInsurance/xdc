@@ -24,8 +24,8 @@ Start auto builds with `nodemon -e cs -w .\ -C .\build.js`
 3. Add `MutateNumber` command
 4. Add `ResultChanged` event
 5. Publish as NuGet
-6. Create console app project `OnPremiseService2.EnvironmentMessageHandler`
-7. Rename project to `EnvironmentMessageHandler`
+6. Create console app project `OnPremiseService2.MathMessageHandler`
+7. Rename project to `MathMessageHandler`
 8. Reference NuGet
 
 
