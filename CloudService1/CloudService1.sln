@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Public", "src\CloudService1.Public\Public.xproj", "{B47FA438-221F-468A-844B-1FDA1F5703DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EchoMessageHandler", "CloudService1.EchoMessageHandler\EchoMessageHandler.csproj", "{99CB994A-8456-4FF4-A621-DCB309BAAC62}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "AzureResourceGroup", "AzureResourceGroup\AzureResourceGroup.deployproj", "{1D197336-EA4D-4AE6-9426-410B55B154CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,11 +26,21 @@ Global
 		{B47FA438-221F-468A-844B-1FDA1F5703DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B47FA438-221F-468A-844B-1FDA1F5703DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B47FA438-221F-468A-844B-1FDA1F5703DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99CB994A-8456-4FF4-A621-DCB309BAAC62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99CB994A-8456-4FF4-A621-DCB309BAAC62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99CB994A-8456-4FF4-A621-DCB309BAAC62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99CB994A-8456-4FF4-A621-DCB309BAAC62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D197336-EA4D-4AE6-9426-410B55B154CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D197336-EA4D-4AE6-9426-410B55B154CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D197336-EA4D-4AE6-9426-410B55B154CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D197336-EA4D-4AE6-9426-410B55B154CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B47FA438-221F-468A-844B-1FDA1F5703DD} = {6481CF58-3CCC-4081-A417-CF26F50AC383}
+		{99CB994A-8456-4FF4-A621-DCB309BAAC62} = {6481CF58-3CCC-4081-A417-CF26F50AC383}
+		{1D197336-EA4D-4AE6-9426-410B55B154CD} = {6481CF58-3CCC-4081-A417-CF26F50AC383}
 	EndGlobalSection
 EndGlobal

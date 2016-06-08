@@ -1,0 +1,124 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "deployEnvironment": {
+      "type": "string",
+      "defaultValue": "test",
+      "allowedValues": [ "test", "prod" ],
+      "metadata": { "description": "Target environment: test OR prod" }
+    },
+    "storageAccountType": {
+      "type": "string",
+      "defaultValue": "Standard_GRS",
+      "allowedValues": [
+        "Standard_LRS",
+        "Standard_GRS",
+        "Standard_ZRS",
+        "Premium_LRS"
+      ],
+      "metadata": {
+        "description": "Storage Account type"
+      }
+    },
+    "sku": {
+      "type": "string",
+      "allowedValues": [
+        "Free",
+        "Shared",
+        "Basic",
+        "Standard"
+      ],
+      "defaultValue": "Standard",
+      "metadata": {
+        "description": "The pricing tier for the hosting plan."
+      }
+    },
+    "workerSize": {
+      "type": "string",
+      "allowedValues": [
+        "0",
+        "1",
+        "2"
+      ],
+      "defaultValue": "0",
+      "metadata": {
+        "description": "The instance size of the hosting plan (small, medium, or large)."
+      }
+    }
+  },
+  "variables": {
+    "storageAccountName": "[concat('storage', uniquestring(resourceGroup().id))]",
+    "storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+    "hostingPlanName": "[concat('CloudService1', parameters('deployEnvironment'), 'HostingPlan')]",
+    "siteName": "[concat('webjobs', uniquestring(resourceGroup().id))]",
+    "apiVersion": "2015-06-15",
+    "sbNamespace": "[concat('ifwp-service-bus-', parameters('deployEnvironment'))]",
+    "sbVersion": "[providers('Microsoft.ServiceBus', 'namespaces').apiVersions[0]]",
+    "defaultSASKeyName": "RootManageSharedAccessKey",
+    "authRuleResourceId": "[resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('sbNamespace'), variables('defaultSASKeyName'))]"
+  },
+  "resources": [
+    /* Storage Account */
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
+      "apiVersion": "[variables('apiVersion')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accountType": "[parameters('storageAccountType')]"
+      }
+    },
+    /* Hosting Plan */
+    {
+      "apiVersion": "2014-06-01",
+      "name": "[variables('hostingPlanName')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "name": "[variables('hostingPlanName')]",
+        "sku": "[parameters('sku')]",
+        "workerSize": "[parameters('workerSize')]",
+        "numberOfWorkers": 1
+      }
+    },
+    /* Web Site */
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[variables('siteName')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverfarms/', variables('hostingPlanName'))]"
+      ],
+      "tags": {
+        "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', variables('hostingPlanName'))]": "empty"
+      },
+      "properties": {
+        "name": "[variables('siteName')]",
+        "serverFarmId": "[variables('hostingPlanName')]"
+      }
+    },
+    /* Service Bus */
+    {
+      "apiVersion": "[variables('sbVersion')]",
+      "name": "[variables('sbNamespace')]",
+      "type": "Microsoft.ServiceBus/namespaces",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "messagingSku": 2
+      },
+      "resources": [ ]
+    }
+  ],
+  "outputs": {
+    "StorageConnectionString": {
+      "type": "string",
+      "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listkeys(variables('storageAccountId'), variables('apiVersion')).key1, ';')]"
+    },
+    "NamespaceDefaultConnectionString": {
+      "type": "string",
+      "value": "[listkeys(variables('authRuleResourceId'), variables('sbVersion')).primaryConnectionString]"
+    }
+  }
+}
