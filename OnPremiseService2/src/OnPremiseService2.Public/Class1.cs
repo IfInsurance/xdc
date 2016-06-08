@@ -6,13 +6,19 @@ namespace OnPremiseService2.Public
     {
         Add, Remove, Multiply, Divide, Reset
     }
+}
 
+namespace OnPremiseService2.Public.Commands
+{
     public interface MutateValue
     {
         Operator Operator { get; set; }
         decimal Operand { get; set; }
     }
+}
 
+namespace OnPremiseService2.Public.Events
+{ 
     public interface ResultChanged
     {
         decimal Result { get; set; }
