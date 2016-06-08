@@ -34,7 +34,7 @@ Start auto builds with `nodemon -e cs -w .\ -C .\build.js`
 3. Add `PleaseRepeatThis` command
 4. Add `EchoedResponse` event
 5. Publish as NuGet
-6. Create a Azure Web Job `CloudService2.EchoMessageHandler`
+6. Create a Azure Web Job `CloudService1.EchoMessageHandler`
 7. Rename project to `EchoMessageHandler`
 8. Reference NuGet 
 
