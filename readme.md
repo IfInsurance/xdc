@@ -9,7 +9,7 @@ Start auto builds with `nodemon -e cs -w .\ -C .\build.js`
 
 ## Todo
 ### On Premise Service 1 - Environment information
-1. ~~Create class library project `OnPremiseService1.Public` in solution `OnPremiseService1`~~
+1. ~~Create a NuGet class library project `OnPremiseService1.Public` in solution `OnPremiseService1`~~
 2. ~~Rename project to `Public`~~
 3. ~~Add `SetEnvironmentVariable` command~~
 4. ~~Add `EnvironmentVariableChanged` event~~
@@ -19,7 +19,7 @@ Start auto builds with `nodemon -e cs -w .\ -C .\build.js`
 8. ~~Reference NuGet~~
 
 ### On Premise Service 2 - Calculator
-1. ~~Create class library project `OnPremiseService2.Public` in solution `OnPremiseService2`~~
+1. ~~Create a NuGet class library project `OnPremiseService2.Public` in solution `OnPremiseService2`~~
 2. ~~Rename project to `Public`~~
 3. ~~Add `MutateNumber` command~~
 4. ~~Add `ResultChanged` event~~
@@ -28,15 +28,24 @@ Start auto builds with `nodemon -e cs -w .\ -C .\build.js`
 7. ~~Rename project to `MathMessageHandler`~~
 8. ~~Reference NuGet~~
 
-### Cloud Service 1 - Echo Service
-1. Create a class library project `CloudService1.Public` in solution `CloudService1` 
+### Cloud Service 1 - Echo Service, using Nimbus
+1. Create a NuGet class library project `CloudService1.Public` in solution `CloudService1` 
 2. Rename project to `Public`
 3. Add `PleaseRepeatThis` command
 4. Add `EchoedResponse` event
 5. Publish as NuGet
-6. Create a Azure Web Job `CloudService1.EchoMessageHandler`
+6. Create an Azure Web Job `CloudService1.EchoMessageHandler`
 7. Rename project to `EchoMessageHandler`
-8. Reference NuGet 
+8. Reference NuGet
+
+### Cloud Service 2 - Color Service, using Nimbus
+1. Create a NuGet class library project `CloudService2.Public` in solution `CloudService2`
+2. Rename project to `Public`
+3. Add `TranslateColorNameToRgb` Command
+4. Add `ColorNameToRgbTranslationComplete` Event
+5. Create an Azure Web Job `CloudService2.ColorMessageHandler`
+6. Rename project to `ColorMessageHandler`
+7. Reference NuGet 
 
 ### On-premises bridge
 1. Reference OP1 and CS1
