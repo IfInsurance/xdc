@@ -2,6 +2,7 @@
 using NServiceBus;
 using NServiceBus.Features;
 using NServiceBus.Azure;
+using NServiceBus.AzureServiceBus;
 
 namespace CloudService1.EchoMessageHandler
 {
@@ -12,26 +13,28 @@ namespace CloudService1.EchoMessageHandler
         // AzureWebJobsDashboard and AzureWebJobsStorage
         static void Main()
         {
-            var configuration = new BusConfiguration();
+            var configuration = new EndpointConfiguration("CloudService1.EchoMessageHandler");
             configuration.DisableFeature<SecondLevelRetries>();
             configuration.DisableFeature<Sagas>();
             configuration.DisableFeature<TimeoutManager>();
-
-            configuration.UseTransport<AzureServiceBusTransport>().ConnectionStringName("AzureWebJobsServiceBus");
-            configuration.UsePersistence<AzureStoragePersistence>();
+            configuration.UseTransport<AzureServiceBusTransport>()
+                .ConnectionStringName("AzureWebJobsServiceBus")
+                .UseTopology<EndpointOrientedTopology>()
+                .ConnectivityMode(Microsoft.ServiceBus.ConnectivityMode.Https);
+            configuration.UsePersistence<InMemoryPersistence>();
+            
+            //configuration.UsePersistence<AzureStoragePersistence>();
             //configuration.ApplyMessageConventions();
 
-            var startableBus = Bus.Create(configuration);
+            var endpoint = Endpoint.Create(configuration).Result;
+            var instance = endpoint.Start().Result;
 
             var hostConfiguration = new JobHostConfiguration();
 
             var host = new JobHost(hostConfiguration);
-            //host.Call(typeof(NimbusConfiguration).GetMethod("Startup"));
+            host.RunAndBlock();
 
-            using (startableBus.Start())
-            {
-                host.RunAndBlock();
-            }
+            instance.Stop();
         }
     }
 }

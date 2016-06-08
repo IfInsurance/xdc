@@ -12,14 +12,12 @@ namespace CloudService1.EchoMessageHandler
 {
     public class CommandHandler : IHandleMessages<Commands.PleaseRepeatThis>
     {
-        public IBus Bus { get; set; }
-
-        public void Handle(Commands.PleaseRepeatThis command)
+        public async Task Handle(Commands.PleaseRepeatThis command, IMessageHandlerContext context)
         {
             if (String.IsNullOrEmpty(command.Phrase))
                 return;
 
-            Bus.Publish<Events.EchoedResponse>(response => {
+            await context.Publish<Events.EchoedResponse>(response => {
                 response.EchoedPhrase = command.Phrase;
             });
         }
