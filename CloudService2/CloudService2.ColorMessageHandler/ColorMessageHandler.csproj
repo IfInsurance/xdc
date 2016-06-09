@@ -97,13 +97,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandHandler.cs" />
-    <Compile Include="EchoSubscriptionHandler.cs" />
-    <Compile Include="Models\ColorTranslation.cs" />
-    <Compile Include="Models\SubscriptionContracts.cs" />
-    <Compile Include="NServiceBusMessageFactory.cs" />
+    <Compile Include="ColorTranslation\CommandHandler.cs" />
+    <Compile Include="EchoSubscription\EchoSubscriptionHandler.cs" />
+    <Compile Include="ColorTranslation\Models.cs" />
+    <Compile Include="EchoSubscription\Models.cs" />
+    <Compile Include="Interop.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SendEchoCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

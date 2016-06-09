@@ -4,9 +4,7 @@ using System;
 using System.Drawing;
 using System.Threading.Tasks;
 using WebJobs.NServiceBus.AzureServiceBus;
-using ColorTranslation = CloudService2.ColorMessageHandler.Models.ColorTranslation;
-
-namespace CloudService2.ColorMessageHandler
+namespace CloudService2.ColorMessageHandler.ColorTranslation
 {
     public static class CommandHandler
     {
@@ -19,12 +17,12 @@ namespace CloudService2.ColorMessageHandler
         {
             Console.WriteLine("Handling command TranslateColorNameToRgb");
 
-            var inputModel = await message.To<ColorTranslation.InputModel>();
+            var inputModel = await message.To<InputModel>();
 
-            if (String.IsNullOrEmpty(inputModel.ColorName))
+            if (string.IsNullOrEmpty(inputModel.ColorName))
                 return;
 
-            ColorTranslation.OutputModel responseModel = Translate(inputModel);
+            OutputModel responseModel = Translate(inputModel);
 
             var resultMessage = Interop
                 .CreateMessage(responseModel, responseModel.EventId, responseModel.InResponseToCommandId)
@@ -33,7 +31,7 @@ namespace CloudService2.ColorMessageHandler
             await events.AddAsync(resultMessage);
         }
 
-        private static ColorTranslation.OutputModel Translate(ColorTranslation.InputModel inputModel)
+        private static OutputModel Translate(InputModel inputModel)
         {
             int r = 0, g = 0, b = 0;
             try
@@ -47,7 +45,7 @@ namespace CloudService2.ColorMessageHandler
             {
             }
 
-            var responseModel = new ColorTranslation.OutputModel
+            var responseModel = new OutputModel
             {
                 InResponseToCommandId = inputModel.CommandId,
                 Timestamp = DateTimeOffset.UtcNow,

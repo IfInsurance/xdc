@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Commands = CloudService2.Public.Commands;
 using Events = CloudService2.Public.Events;
 
-namespace CloudService2.ColorMessageHandler.Models.ColorTranslation
+namespace CloudService2.ColorMessageHandler.ColorTranslation
 {
     public class InputModel : Commands.TranslateColorNameToRgb
     {

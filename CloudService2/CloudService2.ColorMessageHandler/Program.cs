@@ -1,9 +1,5 @@
 ﻿using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.ServiceBus;
-using Microsoft.ServiceBus.Messaging;
-using System.Threading.Tasks;
-using WebJobs.NServiceBus.AzureServiceBus;
-using EchoCommands = CloudService1.Public.Commands;
 
 namespace CloudService2.ColorMessageHandler
 {
@@ -17,27 +13,9 @@ namespace CloudService2.ColorMessageHandler
             serviceBusConfiguration.MessageOptions.ExceptionReceived += (sender, args) => System.Diagnostics.Debugger.Break();
             hostConfiguration.UseServiceBus(serviceBusConfiguration);
             var host = new JobHost(hostConfiguration);
-            host.Call(typeof(ExampleUseCase).GetMethod(nameof(ExampleUseCase.SendMessage)));
+            host.Call(typeof(SendEchoCommand).GetMethod(nameof(SendEchoCommand.Example)));
             host.RunAndBlock();
         }
     }
 
-    public static class ExampleUseCase
-    {
-        public static async Task SendMessage(
-            [ServiceBus("CloudService1.EchoMessageHandler")]
-            IAsyncCollector<BrokeredMessage> repeats)
-        {
-            var message = Interop
-                .CreateMessage(new PrtDto { Phrase = "I'm a lumberjack and I'm OK" })
-                .AsCommand();
-
-            await repeats.AddAsync(message);
-        }
-    }
-
-    public class PrtDto : EchoCommands.PleaseRepeatThis
-    {
-        public string Phrase { get; set; }
-    }
 }
