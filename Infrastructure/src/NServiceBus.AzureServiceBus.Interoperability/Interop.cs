@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebJobs.NServiceBus.AzureServiceBus
+namespace NServiceBus.AzureServiceBus.Interoperability
 {
     public static class Interop
     {

@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0-*",
+  "description": "NServiceBus.AzureServiceBus.Interoperability Class Library",
+  "authors": [ "Sami Lamti (sami.lamti@if.se)" ],
+  "tags": [ "NServiceBus", "Azure", "ServiceBus", "Interop", "WebJobs" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+  "summary": "Enables interoperability with NServiceBus-based services using the Azure ServiceBus as their transport. Can be used in a on-premise handler that needs to communicate with a service in the cloud, or in Azure WebJobs to mimic NServiceBus message handlers.",
+  "frameworks": {
+    "net451": {
+      "dependencies": {
+      }
+    }
+  },
+  "dependencies": {
+    "Newtonsoft.Json": "3.5.8",
+    "WindowsAzure.ServiceBus": "3.2.2"
+  }
+}
