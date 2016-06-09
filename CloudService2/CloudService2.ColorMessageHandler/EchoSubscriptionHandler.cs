@@ -2,6 +2,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.ServiceBus.Messaging;
 using System;
 using System.Threading.Tasks;
+using WebJobs.NServiceBus.AzureServiceBus;
 using Subscriptions = CloudService2.ColorMessageHandler.Models.SubscriptionContracts;
 
 namespace CloudService2.ColorMessageHandler
@@ -13,7 +14,7 @@ namespace CloudService2.ColorMessageHandler
             BrokeredMessage message)
         {
             var echoedResponse = await message.To<Subscriptions.EchoResponse>();
-
+            
             Console.WriteLine($@"Got echo response: {echoedResponse.EchoedPhrase}");
         }
     }

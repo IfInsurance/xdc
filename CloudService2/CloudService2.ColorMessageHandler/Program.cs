@@ -2,6 +2,7 @@
 using Microsoft.Azure.WebJobs.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using System.Threading.Tasks;
+using WebJobs.NServiceBus.AzureServiceBus;
 using EchoCommands = CloudService1.Public.Commands;
 
 namespace CloudService2.ColorMessageHandler
@@ -27,7 +28,7 @@ namespace CloudService2.ColorMessageHandler
             [ServiceBus("CloudService1.EchoMessageHandler")]
             IAsyncCollector<BrokeredMessage> repeats)
         {
-            var message = NServiceBusMessageFactory
+            var message = Interop
                 .CreateMessage(new PrtDto { Phrase = "I'm a lumberjack and I'm OK" })
                 .AsCommand();
 

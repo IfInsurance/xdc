@@ -1,16 +1,15 @@
 using Microsoft.ServiceBus.Messaging;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CloudService2.ColorMessageHandler
+namespace WebJobs.NServiceBus.AzureServiceBus
 {
-    public static class NServiceBusMessageFactory
+    public static class Interop
     {
         public static BrokeredMessage CreateMessage<OfType>(OfType instance, Guid? messageId = null, Guid? responseId = null)
         {

@@ -1,19 +1,15 @@
-//using NServiceBus;
 using Microsoft.Azure.WebJobs;
 using Microsoft.ServiceBus.Messaging;
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using WebJobs.NServiceBus.AzureServiceBus;
 using ColorTranslation = CloudService2.ColorMessageHandler.Models.ColorTranslation;
 
 namespace CloudService2.ColorMessageHandler
 {
-    //public class CommandHandler : IHandleMessages<Commands.TranslateColorNameToRgb>
     public static class CommandHandler
     {
-        //public IBus Bus { get; set; }
-
-        //public void Handle(Commands.TranslateColorNameToRgb message)
         public static async Task Handle(
             [ServiceBusTrigger("CloudService2.ColorMessageHandler")]
             BrokeredMessage message,
@@ -23,16 +19,22 @@ namespace CloudService2.ColorMessageHandler
         {
             Console.WriteLine("Handling command TranslateColorNameToRgb");
 
-            var bodyStream = message.GetBody<System.IO.Stream>();
-            var reader = new System.IO.StreamReader(bodyStream);
-            var bodyText = await reader.ReadToEndAsync();
-            reader.Dispose();
-
-            var inputModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ColorTranslation.InputModel>(bodyText);
+            var inputModel = await message.To<ColorTranslation.InputModel>();
 
             if (String.IsNullOrEmpty(inputModel.ColorName))
                 return;
 
+            ColorTranslation.OutputModel responseModel = Translate(inputModel);
+
+            var resultMessage = Interop
+                .CreateMessage(responseModel, responseModel.EventId, responseModel.InResponseToCommandId)
+                .AsEvent();
+
+            await events.AddAsync(resultMessage);
+        }
+
+        private static ColorTranslation.OutputModel Translate(ColorTranslation.InputModel inputModel)
+        {
             int r = 0, g = 0, b = 0;
             try
             {
@@ -54,12 +56,7 @@ namespace CloudService2.ColorMessageHandler
                 Green = g,
                 Blue = b
             };
-
-            var resultMessage = NServiceBusMessageFactory
-                .CreateMessage(responseModel, responseModel.EventId, responseModel.InResponseToCommandId)
-                .AsEvent();
-
-            await events.AddAsync(resultMessage);
+            return responseModel;
         }
     }
 }
