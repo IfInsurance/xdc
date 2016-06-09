@@ -3,6 +3,8 @@ using NServiceBus;
 using NServiceBus.Features;
 using NServiceBus.Azure;
 using NServiceBus.AzureServiceBus;
+using System.Threading.Tasks;
+using NServiceBus.AzureServiceBus.Addressing;
 
 namespace CloudService1.EchoMessageHandler
 {
@@ -13,28 +15,57 @@ namespace CloudService1.EchoMessageHandler
         // AzureWebJobsDashboard and AzureWebJobsStorage
         static void Main()
         {
+            var hostConfiguration = new JobHostConfiguration();
+            var host = new JobHost(hostConfiguration);
+            host.Call(typeof(NServiceBusConfiguration).GetMethod(nameof(NServiceBusConfiguration.Initialize)));
+            host.RunAndBlock();
+            host.Call(typeof(NServiceBusConfiguration).GetMethod(nameof(NServiceBusConfiguration.Terminate)));
+        }
+    }
+
+    public static class NServiceBusConfiguration
+    {
+        private static IEndpointInstance instance;
+
+        [NoAutomaticTrigger]
+        public static async Task Initialize()
+        {
             var configuration = new EndpointConfiguration("CloudService1.EchoMessageHandler");
             configuration.DisableFeature<SecondLevelRetries>();
             configuration.DisableFeature<Sagas>();
             configuration.DisableFeature<TimeoutManager>();
-            configuration.UseTransport<AzureServiceBusTransport>()
+            var transport = configuration.UseTransport<AzureServiceBusTransport>()
                 .ConnectionStringName("AzureWebJobsServiceBus")
                 .UseTopology<EndpointOrientedTopology>()
-                .ConnectivityMode(Microsoft.ServiceBus.ConnectivityMode.Https);
+                .RegisterPublisherForType("CloudService2.ColorMessageHandler", typeof(CloudService2.Public.Events.ColorNameToRgbTranslationComplete));
+            transport.BrokeredMessageBodyType(SupportedBrokeredMessageBodyTypes.Stream);
+            transport.Sanitization().UseStrategy<EndpointOrientedTopologySanitization>();
+            transport.ConnectivityMode(Microsoft.ServiceBus.ConnectivityMode.Https);
             configuration.UsePersistence<InMemoryPersistence>();
-            
+            configuration.UseSerialization<JsonSerializer>();
+            configuration.EnableInstallers();
+            configuration.Conventions()
+                .DefiningCommandsAs(t => t.Namespace != null && t.Namespace.EndsWith("Public.Commands"))
+                .DefiningEventsAs(t => t.Namespace != null && t.Namespace.EndsWith("Public.Events"));
+            //var routing = configuration.UnicastRouting();
+            //routing.AddPublisher("CloudService1.EchoMessageHandler", typeof(CloudService2.Public.Commands.TranslateColorNameToRgb));
+            //routing.AddPublisher("CloudService2.ColorMessageHandler", typeof(CloudService2.Public.Events.ColorNameToRgbTranslationComplete));
+
             //configuration.UsePersistence<AzureStoragePersistence>();
             //configuration.ApplyMessageConventions();
 
-            var endpoint = Endpoint.Create(configuration).Result;
-            var instance = endpoint.Start().Result;
+            var endpoint = await Endpoint.Create(configuration);
+            instance = await endpoint.Start();
+            //await instance.Send<CloudService2.Public.Commands.TranslateColorNameToRgb>("CloudService2.ColorMessageHandler", t => {
+            //    t.ColorName = "Magenta";
+            //    t.CommandId = System.Guid.NewGuid();
+            //});
+        }
 
-            var hostConfiguration = new JobHostConfiguration();
-
-            var host = new JobHost(hostConfiguration);
-            host.RunAndBlock();
-
-            instance.Stop();
+        [NoAutomaticTrigger]
+        public static async Task Terminate()
+        {
+            await instance.Stop();
         }
     }
 }

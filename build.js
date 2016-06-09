@@ -22,3 +22,4 @@ function autoBuild(solutionName, contractsProjectName) {
 //autoBuild('OnPremiseService1', 'Public');
 //autoBuild('OnPremiseService2', 'Public');
 autoBuild('CloudService1', 'Public');
+autoBuild('CloudService2', 'Public');

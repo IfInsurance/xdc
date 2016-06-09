@@ -1,16 +1,16 @@
 ﻿namespace CloudService1.Public.Commands
 {
-    public interface PleaseRepeatThis
+    public class PleaseRepeatThis
     {
-        string Phrase { get; set; }
+        public string Phrase { get; set; }
     }
 }
 
 namespace CloudService1.Public.Events
 {
-    public interface EchoedResponse
+    public class EchoedResponse
     {
-        string EchoedPhrase { get; set; }
+        public string EchoedPhrase { get; set; }
     }
 }
 

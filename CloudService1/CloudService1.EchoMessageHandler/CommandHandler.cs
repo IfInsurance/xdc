@@ -17,6 +17,8 @@ namespace CloudService1.EchoMessageHandler
             if (String.IsNullOrEmpty(command.Phrase))
                 return;
 
+            Console.WriteLine("Handling command PleaseRepeatThis");
+
             await context.Publish<Events.EchoedResponse>(response => {
                 response.EchoedPhrase = command.Phrase;
             });
