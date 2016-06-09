@@ -11,7 +11,7 @@ namespace NServiceBus.AzureServiceBus.Interoperability
 {
     public static class Interop
     {
-        public static BrokeredMessage CreateMessage<OfType>(OfType instance, Guid? messageId = null, Guid? responseId = null)
+        public static BrokeredMessage CreateMessage<OfType>(OfType instance, string messageId = null, string responseId = null)
         {
             var jsonSerializedInstance = JsonConvert.SerializeObject(instance);
             var byteRepresentation = Encoding.UTF8.GetBytes(jsonSerializedInstance);
@@ -23,15 +23,33 @@ namespace NServiceBus.AzureServiceBus.Interoperability
             resultMessage.Properties.Add("NServiceBus.ContentType", "text/json");
             resultMessage.Properties.Add("NServiceBus.EnclosedMessageTypes", 
                 string.Join(",", instance.GetType().GetInterfaces().Select(i => i.FullName)));
-            resultMessage.Properties.Add("NServiceBus.MessageId", (messageId.HasValue ? messageId : Guid.NewGuid()).ToString());
-            if (responseId.HasValue)
-            {
-                resultMessage.Properties.Add("NServiceBus.RelatedTo", responseId.Value.ToString());
-            }
+
+            ApplyMessageId(resultMessage, messageId);
+            ApplyResponseId(resultMessage, responseId);
             
             resultMessage.Properties.Add("NServiceBus.OriginatingEndpoint", Assembly.GetExecutingAssembly().FullName);
             resultMessage.Properties.Add("NServiceBus.TimeSent", DateTimeOffset.UtcNow.ToString("yyyy-MM-dd HH:mm:ss:ffffff Z"));
             return resultMessage;
+        }
+
+        private static void ApplyMessageId(BrokeredMessage message, string inputMessageId)
+        {
+            var messageId = inputMessageId ?? Guid.NewGuid().ToString();
+
+            // For NServiceBus
+            message.Properties.Add("NServiceBus.MessageId", messageId);
+
+            // For Azure Service Bus' Duplicate Detection
+            message.MessageId = messageId;
+        }
+
+        private static void ApplyResponseId(BrokeredMessage message, string responseId)
+        {
+            if (String.IsNullOrEmpty(responseId))
+                return;
+
+            message.Properties.Add("NServiceBus.RelatedTo", responseId);
+            message.CorrelationId = responseId;
         }
 
         public static BrokeredMessage AsEvent(this BrokeredMessage message)
