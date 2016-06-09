@@ -19,7 +19,7 @@ namespace EnvironmentEchoBridge
         public void Handle(BrokeredMessage message)
         {
             var echoedResponse = message.To<EchoedResponse>().Result;
-            _bus.Send(message);
+            _bus.Publish(echoedResponse);
             message.Complete();
         }
     }
