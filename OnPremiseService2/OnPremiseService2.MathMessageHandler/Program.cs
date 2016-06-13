@@ -16,6 +16,10 @@ namespace OnPremiseService2.MathMessageHandler
             config.DefiningEventsAs(t => t != null && t.Namespace != null && t.Namespace.EndsWith("Public.Events"));
             config.DefiningCommandsAs(t => t != null && t.Namespace != null && t.Namespace.EndsWith("Public.Commands"));
             config.MsmqSubscriptionStorage();
+            config.InMemorySagaPersister();
+            config.UseInMemoryGatewayPersister();
+            config.UseInMemoryTimeoutPersister();
+            config.Log4Net();
             config.UseTransport<Msmq>();
 
             using (var bus = config.UnicastBus().CreateBus())

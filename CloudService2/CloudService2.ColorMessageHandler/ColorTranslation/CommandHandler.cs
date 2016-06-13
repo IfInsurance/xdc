@@ -13,7 +13,10 @@ namespace CloudService2.ColorMessageHandler.ColorTranslation
             BrokeredMessage message,
             
             [ServiceBus("CloudService2.ColorMessageHandler.Events")]
-            IAsyncCollector<BrokeredMessage> events)
+            IAsyncCollector<BrokeredMessage> events,
+            
+            [ServiceBus("OnPremiseService2.MathColorBridge")]
+            IAsyncCollector<BrokeredMessage> mathCommands)
         {
             Console.WriteLine("Handling command TranslateColorNameToRgb");
 
@@ -29,6 +32,15 @@ namespace CloudService2.ColorMessageHandler.ColorTranslation
                 .AsEvent();
 
             await events.AddAsync(resultMessage);
+
+            var mathCommand = new MathModel {
+                Operator = OnPremiseService2.Public.Operator.Add,
+                Operand = responseModel.Red
+            };
+            var mathMessage = Interop
+                .CreateMessage(mathCommand)
+                .AsCommand();
+            await mathCommands.AddAsync(mathMessage);
         }
 
         private static OutputModel Translate(InputModel inputModel)

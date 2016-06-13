@@ -8,7 +8,7 @@ namespace OnPremiseService1.EnvironmentMessageHandler
     {
         public void Handle(EchoedResponse message)
         {
-            EnvironmentEchoBridge.DemoPrintouts.End("Received an echo response: " + message.EchoedPhrase);
+            DemoPrintouts.End("Received an echo response: " + message.EchoedPhrase);
         }
     }
 }

@@ -11,6 +11,11 @@ namespace CloudService1.EchoMessageHandler
         public Task Handle(ColorNameToRgbTranslationComplete message, IMessageHandlerContext context)
         {
             Console.WriteLine("Got color name to RGB translation response: " + JsonConvert.SerializeObject(message));
+
+            context.Publish<Public.Events.EchoedResponse>(response => {
+                response.EchoedPhrase = $"Calculated rgb({message.Red}, {message.Green}, {message.Blue})";
+            });
+
             return Task.FromResult(true);
         }
     }

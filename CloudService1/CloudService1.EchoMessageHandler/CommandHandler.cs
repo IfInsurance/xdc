@@ -1,12 +1,9 @@
 using Commands = CloudService1.Public.Commands;
 using Events = CloudService1.Public.Events;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
 using NServiceBus;
+using CloudService2.Public.Commands;
 
 namespace CloudService1.EchoMessageHandler
 {
@@ -21,6 +18,11 @@ namespace CloudService1.EchoMessageHandler
 
             await context.Publish<Events.EchoedResponse>(response => {
                 response.EchoedPhrase = command.Phrase;
+            });
+
+            await context.Send<TranslateColorNameToRgb>("CloudService2.ColorMessageHandler", translate => {
+                translate.ColorName = command.Phrase;
+                translate.CommandId = Guid.NewGuid();
             });
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using OnPremiseService2.Public;
 using Commands = CloudService2.Public.Commands;
 using Events = CloudService2.Public.Events;
 
@@ -18,5 +19,11 @@ namespace CloudService2.ColorMessageHandler.ColorTranslation
         public Guid EventId { get; set; }
         public Guid InResponseToCommandId { get; set; }
         public DateTimeOffset Timestamp { get; set; }
+    }
+
+    public class MathModel : OnPremiseService2.Public.Commands.MutateValue
+    {
+        public decimal Operand { get; set; }
+        public Operator Operator { get; set; }
     }
 }

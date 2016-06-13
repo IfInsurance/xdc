@@ -37,7 +37,7 @@ namespace OnPremiseService1.EnvironmentMessageHandler
                     switch (consoleKey.KeyChar)
                     {
                         case '1':
-                            EnvironmentEchoBridge.DemoPrintouts.Begin("Sending command ... ");
+                            DemoPrintouts.Begin("Sending command ... ");
                             messaging.Send<Commands.MutateValue>(v =>
                             {
                                 v.Operator = Operator.Add;
@@ -45,7 +45,7 @@ namespace OnPremiseService1.EnvironmentMessageHandler
                             });
                             break;
                         case '2':
-                            EnvironmentEchoBridge.DemoPrintouts.Begin("Sending command ... ");
+                            DemoPrintouts.Begin("Sending command ... ");
                             messaging.Send<CloudService1.Public.Commands.PleaseRepeatThis>(r =>
                             {
                                 r.Phrase = "Magenta";
