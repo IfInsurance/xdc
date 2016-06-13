@@ -8,9 +8,7 @@ namespace OnPremiseService1.EnvironmentMessageHandler
     {
         public void Handle(EchoedResponse message)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("Received an echo response: " + message.EchoedPhrase);
-            Console.ResetColor();
+            EnvironmentEchoBridge.DemoPrintouts.End("Received an echo response: " + message.EchoedPhrase);
         }
     }
 }

@@ -8,9 +8,7 @@ namespace OnPremiseService1.EnvironmentMessageHandler
     {
         public void Handle(Subscriptions.ResultChanged message)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("Received a Result Changed response: " + message.Result);
-            Console.ResetColor();
+            EnvironmentEchoBridge.DemoPrintouts.End("Received an echo response: " + message.Result);
         }
     }
 }

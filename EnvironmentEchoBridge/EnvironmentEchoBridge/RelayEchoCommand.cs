@@ -9,18 +9,11 @@ namespace EnvironmentEchoBridge
     public class RelayEchoCommand : IHandleMessages<PleaseRepeatThis>
     {
         public IBus Bus { get; set; }
-        //public MessageSender MessageSender { get; set; }
+        public MessageSender MessageSender { get; set; }
 
         public void Handle(PleaseRepeatThis message)
         {
-            System.Console.Write("Relaying Echo Command ... ");
-
-            var appSettingsReader = new System.Configuration.AppSettingsReader();
-            var connectionString = (string)appSettingsReader.GetValue("Microsoft.ServiceBus.ConnectionString", typeof(string));
-
-            var messagingFactory = MessagingFactory.CreateFromConnectionString(connectionString);
-            var MessageSender = messagingFactory.CreateMessageSender("CloudService1.EchoMessageHandler");
-            //Configure.Component<MessageSender>(() => messagingFactory.CreateMessageSender("CloudService1.EchoMessageHandler"), DependencyLifecycle.SingleInstance);
+            DemoPrintouts.Begin("Relaying Echo Command ... ");
 
             var brokeredMessage = Interop.CreateMessage(message, Bus.CurrentMessageContext.Id);
 
@@ -31,8 +24,7 @@ namespace EnvironmentEchoBridge
             {
                 MessageSender.Send(brokeredMessage);
                 scope.Complete();
-                MessageSender.Close();
-                System.Console.WriteLine("Done!");
+                DemoPrintouts.End("Done!");
             }
         }
     }
