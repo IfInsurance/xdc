@@ -8,7 +8,9 @@ namespace OnPremiseService1.EnvironmentMessageHandler
     {
         public void Handle(Subscriptions.ResultChanged message)
         {
-            Console.WriteLine("w00t! value: " + message.Result);
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Received a Result Changed response: " + message.Result);
+            Console.ResetColor();
         }
     }
 }

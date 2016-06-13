@@ -62,10 +62,14 @@ NServiceBus retry logic together with Azure Service Bus' duplicate message detec
 only once delivery.
 
 #### Tasks
-1. Reference *OnPremiseService1* and *CloudService1*
-2. Reference local NServiceBus (4.0.2)
-3. Reference the *Interop layer* (which, in turn, references the Azure ServiceBus SDK)
-
+1. ~~Reference *OnPremiseService1* and *CloudService1*~~
+2. ~~Reference local NServiceBus (4.0.2)~~
+3. ~~Reference the *Interop layer* (which, in turn, references the Azure ServiceBus SDK)~~
+4. ~~Let *OnPremiseService1* reference *CloudService1*~~
+5. ~~Add a `MessageEndpointMapping` in *OnPremiseService1*, binding it to the bridge's queue (`OnPremiseService1.EchoServiceBridge@localhost` in this example).~~
+6. ~~Add Logic in the `OnPremiseService1.EnvironmentMessageHandler` to interactively send a command either to the
+`OnPremiseService2.MathMessageHandler` (as before), or the `OnPremiseService1.EchoServiceBridge`.~~
+7. ~~Implement a subscription handler for `CloudService1.Public.Events.EchoedResponse`~~
 
 
 

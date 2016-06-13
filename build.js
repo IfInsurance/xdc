@@ -23,3 +23,4 @@ function autoBuild(solutionName, contractsProjectName) {
 //autoBuild('OnPremiseService2', 'Public');
 autoBuild('CloudService1', 'Public');
 autoBuild('CloudService2', 'Public');
+autoBuild('Infrastructure', 'NServiceBus.AzureServiceBus.Interoperability');

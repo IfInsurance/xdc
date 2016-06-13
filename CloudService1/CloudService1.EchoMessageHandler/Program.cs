@@ -46,11 +46,11 @@ namespace CloudService1.EchoMessageHandler
 
             var endpoint = await Endpoint.Create(configuration);
             instance = await endpoint.Start();
-            await instance.Send<CloudService2.Public.Commands.TranslateColorNameToRgb>("CloudService2.ColorMessageHandler", t =>
-            {
-                t.ColorName = "Magenta";
-                t.CommandId = System.Guid.NewGuid();
-            });
+            //await instance.Send<CloudService2.Public.Commands.TranslateColorNameToRgb>("CloudService2.ColorMessageHandler", t =>
+            //{
+            //    t.ColorName = "Magenta";
+            //    t.CommandId = System.Guid.NewGuid();
+            //});
         }
 
         [NoAutomaticTrigger]

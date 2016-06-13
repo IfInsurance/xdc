@@ -33,6 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CloudService1.Public, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CloudService1.Public.1.0.0\lib\net451\CloudService1.Public.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NServiceBus, Version=4.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
       <HintPath>..\packages\NServiceBus.Interfaces.4.0.2\lib\net40\NServiceBus.dll</HintPath>
       <Private>True</Private>
@@ -60,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="EchoSubscription.cs" />
     <Compile Include="MathSubscription.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
