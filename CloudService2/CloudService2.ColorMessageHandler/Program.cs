@@ -13,7 +13,7 @@ namespace CloudService2.ColorMessageHandler
             serviceBusConfiguration.MessageOptions.ExceptionReceived += (sender, args) => System.Diagnostics.Debugger.Break();
             hostConfiguration.UseServiceBus(serviceBusConfiguration);
             var host = new JobHost(hostConfiguration);
-            host.Call(typeof(SendEchoCommand).GetMethod(nameof(SendEchoCommand.Example)));
+            //host.Call(typeof(SendEchoCommand).GetMethod(nameof(SendEchoCommand.Example)));
             host.RunAndBlock();
         }
     }

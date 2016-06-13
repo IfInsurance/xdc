@@ -1,6 +1,5 @@
 ﻿using NServiceBus;
 using NServiceBus.Installation.Environments;
-using Commands = OnPremiseService1.Public.Commands;
 using System;
 
 namespace OnPremiseService2.MathMessageHandler
@@ -19,20 +18,14 @@ namespace OnPremiseService2.MathMessageHandler
             config.InMemorySagaPersister();
             config.UseInMemoryGatewayPersister();
             config.UseInMemoryTimeoutPersister();
-            config.Log4Net();
+            //config.Log4Net();
             config.UseTransport<Msmq>();
 
             using (var bus = config.UnicastBus().CreateBus())
             {
                 bus.Start(() => config.ForInstallationOn<Windows>().Install());
-                bus.Send<Commands.SetEnvironmentVariable>(variable =>
-                {
-                    variable.Name = "USER";
-                    variable.Value = "Benjamin";
-                });
-                Console.WriteLine("Press any key to exit");
-                Console.Out.Flush();
-                Console.ReadKey();
+                Console.Title = "OnPremiseService2 - Demo - Press ENTER to exit";
+                Console.ReadLine();
             }
         }
     }

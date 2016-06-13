@@ -1,5 +1,4 @@
 using NServiceBus;
-using System;
 using Subscriptions = OnPremiseService2.Public.Events;
 
 namespace OnPremiseService1.EnvironmentMessageHandler
@@ -8,7 +7,7 @@ namespace OnPremiseService1.EnvironmentMessageHandler
     {
         public void Handle(Subscriptions.ResultChanged message)
         {
-            DemoPrintouts.End("Received an echo response: " + message.Result);
+            DemoPrintouts.End("Received an math response: " + message.Result);
         }
     }
 }

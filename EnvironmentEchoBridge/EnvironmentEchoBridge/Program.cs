@@ -24,7 +24,7 @@ namespace EnvironmentEchoBridge
                 .UseInMemoryTimeoutPersister()
                 .InMemorySagaPersister()
                 .UseTransport<Msmq>()
-                .Log4Net();
+                /*.Log4Net()*/;
 
             using (var lifetimeManagement = config.UnicastBus().CreateBus())
             {

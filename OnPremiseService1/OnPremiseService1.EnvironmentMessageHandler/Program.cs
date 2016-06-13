@@ -22,7 +22,7 @@ namespace OnPremiseService1.EnvironmentMessageHandler
                 .UseInMemoryGatewayPersister()
                 .UseInMemoryTimeoutPersister()
                 .UseTransport<Msmq>()
-                .Log4Net();
+                /*.Log4Net()*/;
 
             using (var lifetimeManagement = config.UnicastBus().CreateBus())
             {
@@ -48,7 +48,7 @@ namespace OnPremiseService1.EnvironmentMessageHandler
                             DemoPrintouts.Begin("Sending command ... ");
                             messaging.Send<CloudService1.Public.Commands.PleaseRepeatThis>(r =>
                             {
-                                r.Phrase = "Magenta";
+                                r.Phrase = "Orange";
                             });
                             break;
                         default:

@@ -35,7 +35,7 @@ namespace CloudService2.ColorMessageHandler.ColorTranslation
 
             var mathCommand = new MathModel {
                 Operator = OnPremiseService2.Public.Operator.Add,
-                Operand = responseModel.Red
+                Operand = responseModel.Red + responseModel.Green + responseModel.Blue
             };
             var mathMessage = Interop
                 .CreateMessage(mathCommand)
