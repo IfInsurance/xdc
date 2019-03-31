@@ -1,3 +1,5 @@
+Note to reviewers: The Azure resources referenced in this solution, has been removed. As such, to run any part of this demo/proof of concept, please ensure that you provision your own resources and reference them.
+
 # About
 Cross Data-Centre Logic, or *on-premise to the cloud and back again*!
 
